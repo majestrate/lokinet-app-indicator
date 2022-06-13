@@ -133,27 +133,23 @@ func main() {
 	menu.Add(item)
 	menu.ShowAll()
 
-	stateUpdate := func() {
+	getIcon := func() string {
 		switch lokinet.State() {
 		case Off:
-			indicator.SetIcon(iconOff)
-			return
+			return iconOff
 		case On:
-			indicator.SetIcon(iconOn)
-			return
+			return iconOn
 		case Errored:
-			indicator.SetIcon(iconErr)
-			return
+			return iconErr
 		default:
-			indicator.SetIcon(iconUnk)
-			return
+			return iconUnk
 		}
 	}
 
 	go func() {
 		for {
 			<-t.C
-			stateUpdate()
+			indicator.SetIcon(getIcon())
 		}
 	}()
 
