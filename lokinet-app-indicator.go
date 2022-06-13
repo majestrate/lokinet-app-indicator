@@ -59,7 +59,7 @@ func (sd *sdLokinet) State() LokinetState {
 	if err != nil {
 		return Errored
 	}
-	activeState := strings.ToLower(prop.Value.String())
+	activeState := strings.Trim(strings.ToLower(prop.Value.String()), "\"")
 
 	if activeState == "inactive" {
 		return Off
@@ -102,7 +102,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	item, err := gtk.MenuItemNewWithLabel("item-label")
+	item, err := gtk.MenuItemNewWithLabel("exit")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -121,6 +121,13 @@ func main() {
 
 	item.Connect("activate", func() {
 		indicator.SetLabel("activated", "")
+	})
+
+	t := time.NewTicker(time.Second)
+
+	item.Connect("activate", func() {
+		t.Stop()
+		gtk.MainQuit()
 	})
 
 	menu.Add(item)
@@ -145,7 +152,7 @@ func main() {
 
 	go func() {
 		for {
-			<-time.After(time.Second)
+			<-t.C
 			stateUpdate()
 		}
 	}()
