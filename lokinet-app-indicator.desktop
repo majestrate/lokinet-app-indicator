@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Exec=~/.local/bin/lokinet-app-indicator
+Hidden=false
+Name=lokinet tray icon
+Comment=lokinet state indicator thing
